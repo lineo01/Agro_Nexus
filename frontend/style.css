@@ -1,0 +1,364 @@
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  background: #f3f4f6;
+}
+header {
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px ;
+  background-color: #16a34a;
+}
+
+
+.logo-container {
+  align-items: center;
+  gap: 15px;
+}
+
+header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #d1d5db;
+}
+/* Logo styling */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 20px;
+  height: 25px;
+  object-fit: contain;
+}
+
+header p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+.main-container {
+  display: flex;
+  height: calc(100vh - 80px);
+  gap: 10px;
+  margin-top: 10px; /* pushes content below the fixed header */
+  padding: 10px;
+}
+.left-panel { flex: 0.4; display:flex; flex-direction:column; gap:10px; overflow-y:auto; }
+.right-panel { flex: 0.6; display:flex; flex-direction:column; gap:10px; overflow-y:auto; }
+
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#sensorChart {
+  width: 100%;
+  height: 500px;
+}
+
+
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+}
+
+.chart-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.chat-box {
+  height: 350px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
+  background: #f9f9f9;
+
+  white-space: pre-wrap;   /* 🔥 THIS FIXES IT */
+  word-break: break-word;
+}
+
+.chat-input {
+  display: flex;
+  gap: 8px;
+  margin-top: 5px;
+}
+.chat-input input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.chat-input button {
+  padding: 8px 12px;
+  background: #16a34a;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+/* Yield Calculator Styling */
+.yield-input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* spacing between inputs */
+}
+
+.yield-input input,
+.yield-input select {
+  border: 2px solid #10b981;
+  padding: 12px;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box; /* prevents scrollbar overflow */
+}
+
+.yield-input button {
+  background: #059669;
+  color: white;
+  font-weight: 600;
+  padding: 12px;
+  border-radius: 8px;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.yield-input button:hover {
+  background: #047857;
+}
+
+#yieldResult {
+  font-weight: 600;
+  color: #065f46;
+  margin-top: 5px;
+}
+/* Base Light Mode */
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background: #f3f4f6;
+  color: #111827;
+}
+
+/* Dark Mode */
+body.dark {
+  background: #1f2937;
+  color: #f9fafb;
+}
+
+/* Dark mode for chat area */
+body.dark .chat-box {
+  background: #1f2937;  /* same as dark body or slightly darker */
+  color: #f9fafb;
+  border: 1px solid #374151;
+}
+
+/* Optional: make placeholder text visible in dark mode */
+body.dark .chat-input input::placeholder {
+  color: #d1d5db; /* light gray placeholder */
+}
+
+
+body.dark .card {
+  background: #374151;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  color: #f9fafb;
+}
+
+body.dark input,
+body.dark select {
+  background: #4b5563;
+  color: #f9fafb;
+  border-color: #10b981;
+}
+
+body.dark button {
+  background: #059669;
+  color: #f9fafb;
+}
+
+body.dark canvas {
+  background: #1f2937;
+}
+
+.toggles { display:flex; gap:15px; align-items:center;margin-left: 10px; }
+
+/* Dark mode switch */
+.switch-container {
+  display:flex; align-items:center; gap:5px; font-weight:600;
+  padding: 10px;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+.switch input { opacity: 0; width:0; height:0; }
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top:0; left:0; right:0; bottom:0;
+  background:#ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+.slider:before {
+  position: absolute;
+  content:"";
+  height:22px;
+  width:22px;
+  left:2px;
+  bottom:2px;
+  background:white;
+  transition: .4s;
+  border-radius:50%;
+}
+input:checked + .slider { background:#059669; }
+input:checked + .slider:before { transform: translateX(24px); }
+
+/* Language select custom style */
+.lang-container select {
+  padding:6px 12px;
+  border-radius:8px;
+  border:2px solid #10b981;
+  background:white;
+  font-weight:600;
+  cursor:pointer;
+  transition: 0.3s;
+}
+body.dark .lang-container select { background:#374151; color:white; border:2px solid #059669; }
+
+
+/* Chat messages */
+.user-msg, .ai-msg {
+  padding: 8px 12px;
+  margin: 5px 0;
+  border-radius: 8px;
+  max-width: 90%;
+  word-wrap: break-word;
+}
+
+/* FARM DETAILS CARD */
+.card h2 {
+    font-size: 1.3rem;
+    color: #2a7f4f;
+    margin-bottom: 12px;
+}
+
+.card select, .card p {
+    width: 100%;
+    margin: 6px 0 12px 0;
+    font-size: 0.95rem;
+}
+
+/* Dropdowns */
+.card select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #fdfdfd;
+    transition: 0.2s all ease-in-out;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.card select:hover {
+    border-color: #2a7f4f;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card select:focus {
+    border-color: #2a7f4f;
+    box-shadow: 0 2px 8px rgba(42,127,79,0.3);
+}
+
+/* Info fields */
+.card p {
+    background-color: #f4f8f6;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border-left: 4px solid #2a7f4f;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Labels */
+.card label {
+    font-weight: 600;
+    color: #2a7f4f;
+    display: block;
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .card p, .card select {
+        font-size: 0.9rem;
+    }
+}
+
+.user-msg {
+  background: #16a34a;
+  color: white;
+  align-self: flex-end;
+}
+
+.ai-msg {
+  background: #e5e7eb;
+  color: #111827;
+  align-self: flex-start;
+}
+
+/* Dark mode fixes */
+body.dark .ai-msg { background: #374151; color: #f9fafb; }
+body.dark .user-msg { background: #059669; color: #f9fafb; }
+
+/* Resize panels */
+.left-panel { flex: 0.35; }
+.right-panel { flex: 0.65; }
+
+/* Chat input bigger */
+.chat-input input { padding: 12px; font-size: 16px; }
+.chat-input button { padding: 12px 16px; font-size: 16px; }
+
+/* ================= DARK MODE FIX ================= */
+body.dark .main-container,
+body.dark .left-panel,
+body.dark .right-panel {
+  background: #1f2937 !important;
+}
+
+body.dark .card,
+body.dark .chat-box {
+  background: #374151 !important;
+  color: #f9fafb !important;
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea {
+  background: #4b5563 !important;
+  color: #f9fafb !important;
+  border-color: #059669 !important;
+}
+
+body.dark .ai-msg { background: #374151 !important; color: #f9fafb !important; }
+body.dark .user-msg { background: #059669 !important; color: #f9fafb !important; }
+

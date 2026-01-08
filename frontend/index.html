@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krishi Chakra - AI Farm Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+</head>
+<body>
+<header>
+  <div class="logo-container">
+    <img src="logo.png" alt="Agro Chakra Logo" class="logo">
+    <div class="logo-text">
+      <h1>Krishi Chakra</h1>
+      <p>Your AI Farm Advisor</p>
+    </div>
+  </div>
+  <div class="toggles">
+    <!-- Dark Mode -->
+    <div class="switch-container">
+      <span>🌞</span>
+      <label class="switch">
+        <input type="checkbox" id="darkModeToggle">
+        <span class="slider round"></span>
+      </label>
+      <span>🌙</span>
+    </div>
+
+    <!-- Language -->
+    <div class="lang-container">
+      <select id="languageToggle">
+        <option value="en">English</option>
+        <option value="np">नेपाली</option>
+      </select>
+    </div>
+  </div>
+</header>
+<div class="main-container">
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <!-- Sensor -->
+  <div class="card">
+  <h2 class="font-bold mb-3" data-lang="sensor">📊 Sensor Data</h2>
+
+  <div class="chart-wrapper">
+    <canvas id="sensorChart"></canvas>
+  </div>
+</div>
+
+   <!-- FARM DETAILS -->
+<div class="card">
+  <h2 class="font-bold mb-3" data-lang="farmDetails">🌾 Farm Details</h2>
+  <label for="regionSelect"><strong>Region:</strong></label>
+  <select id="regionSelect">
+    <option value="">Select Region</option>
+    <option value="terai">Terai</option>
+    <option value="hills">Hills</option>
+    <option value="mountains">Mountains</option>
+  </select>
+  <label for="districtSelect"><strong>District:</strong></label>
+  <select id="districtSelect">
+    <option value="">Select District</option>
+  </select>
+
+  <p><strong>Soil Type:</strong> <span id="soilTypeDetail">-</span></p>
+  <p><strong>Weather:</strong> <span id="weather">-</span></p>
+
+</div>
+
+
+
+    <!-- Yield Calculator -->
+    <div class="card">
+      <h2 class="font-bold mb-3" data-lang="yield">Yield Calculator</h2>
+      <div class="yield-input">
+
+        <input type="text" id="cropInput" data-lang-placeholder="cropPlaceholder" placeholder="Enter Crop Name">
+        <input type="number" id="farmArea" data-lang-placeholder="areaPlaceholder" placeholder="Farm Area in Acres">
+
+        <select id="soilType">
+          <option value="loamy">Loamy</option>
+          <option value="clay">Clay</option>
+          <option value="sandy">Sandy</option>
+          <option value="silt">Silt</option>
+        </select>
+
+        <input type="number" id="expectedRain" placeholder="Expected Rainfall (mm)">
+        <input type="number" id="fertilizer" placeholder="Fertilizer applied (kg)">
+
+        <button id="calculateYieldBtn" data-lang="calculateBtn">Calculate Yield</button>
+
+        <div id="yieldResult"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+
+    <!-- AI Chat -->
+    <div class="card">
+      <h2 class="font-bold mb-3" data-lang="aiChat">AI Chat & Alerts</h2>
+      
+      <div id="chat-box" class="chat-box"></div>
+
+      <div class="chat-input">
+        <input type="text" id="user-input" 
+               data-lang-placeholder="userInput"
+               placeholder="Ask AI about your farm...">
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+
+    <!-- Plant Health -->
+    <div class="card">
+      <h2 class="font-bold mb-3" data-lang="Plant_Health">🌱 Plant Health Status</h2>
+      <p id="plant-health">Good ✅</p>
+    </div>
+
+    <!-- Best Crops -->
+    <div class="card">
+      <h2 class="font-bold mb-3" data-lang="Best_Crops">🌾 Best Crops</h2>
+      <ul id="best-crops"></ul>
+    </div>
+
+    <!-- AI Tips -->
+    <div class="card">
+      <h2 class="font-bold mb-3" data-lang="Ai_Tips">💡 Quick AI Tips</h2>
+      <ul id="ai-tips"></ul>
+    </div>
+
+    <!-- Alerts -->
+    <div class="card">
+      <h2 class="font-bold mb-3" data-lang="Alerts">🔔 Alerts</h2>
+      <ul id="alerts-list"></ul>
+    </div>
+
+    <!-- Farm Summary -->
+    <div class="card">
+      <h2 class="font-bold mb-3" data-lang="farmSummary">📝 Farm Summary</h2>
+      <p id="farm-desc">Loading farm analysis...</p>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Scripts -->
+<script src="chartConfig.js"></script>
+<script src="farmdetails.js"></script>
+<script src="app.js"></script>
+<script src="yieldCalc.js"></script>
+
+</body>
+</html>
