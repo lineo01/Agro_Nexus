@@ -18,18 +18,9 @@ const sendBtn = document.getElementById('sendBtn');
 const languageToggle = document.getElementById('languageToggle');
 const darkModeToggle = document.getElementById('darkModeToggle');
 
-/*******************************
- * API URLS
- *******************************/
 const SENSOR_URL = 'http://localhost:3000/sensors/latest';
 const AI_CHAT_URL = 'http://localhost:3000/ai/chat';
 
-/*******************************
- * FETCH SENSOR DATA
- *******************************/
-/*******************************
- * FETCH SENSOR DATA
- *******************************/
 async function fetchSensorData() {
   try {
     const res = await fetch(SENSOR_URL);
@@ -45,7 +36,7 @@ async function fetchSensorData() {
         humidity: latestData.humidity,
         moisture: latestData.moisture,
         ph: latestData.ph,
-        light: latestData.light ?? 0, // optional
+        light: latestData.light ?? 0,
         ir: latestData.ir ?? 0
       });
     }
@@ -60,9 +51,7 @@ async function fetchSensorData() {
 setInterval(fetchSensorData, 10000);
 fetchSensorData();
 
-/*******************************
- * SAFE HTML
- *******************************/
+
 function escapeHTML(str = '') {
   return str.replace(/[&<>"']/g, m => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;',
@@ -70,9 +59,7 @@ function escapeHTML(str = '') {
   }[m]));
 }
 
-/*******************************
- * AI CHAT
- *******************************/
+
 async function sendChat() {
   const prompt = userInput.value.trim();
   if (!prompt) return;
@@ -81,34 +68,21 @@ async function sendChat() {
   userInput.value = '';
   chatBox.scrollTop = chatBox.scrollHeight;
 
-  const includeFarmData = /farm|soil|crop|ph|moisture|temperature|humidity/i.test(prompt);
-
-  const contextPrompt = `
-You are Krishi Chakra, a friendly farming AI.
-Language: ${currentLanguage === 'np' ? 'Nepali' : 'English'}
-
-${includeFarmData ? `
-Farm Data:
-- Temp: ${latestData.temperature}°C
-- Humidity: ${latestData.humidity}%
-- Moisture: ${latestData.moisture}%
-- pH: ${latestData.ph}
-- Season: ${latestData.season}
-` : ''}
-
-User: ${prompt}
-Reply briefly with bullet points if giving advice.
-`;
-
   try {
     const res = await fetch(AI_CHAT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: contextPrompt })
+      body: JSON.stringify({
+        prompt,
+        lang: currentLanguage
+      })
     });
+
     const data = await res.json();
+
     chatBox.innerHTML += `<div class="ai-msg">Krishi Chakra: ${escapeHTML(data.reply)}</div>`;
-  } catch {
+  } catch (err) {
+    console.error(err);
     chatBox.innerHTML += `<div class="ai-msg">❌ AI connection failed</div>`;
   }
 
@@ -118,9 +92,6 @@ Reply briefly with bullet points if giving advice.
 sendBtn.addEventListener('click', sendChat);
 userInput.addEventListener('keydown', e => e.key === 'Enter' && sendChat());
 
-/*******************************
- * YIELD CALCULATOR
- *******************************/
 function calculateYield() {
   const crop = document.getElementById('cropInput').value;
   const area = parseFloat(document.getElementById('farmArea').value);
@@ -179,9 +150,6 @@ const t = {
   }
 };
 
-/*******************************
- * CROP RULES
- *******************************/
 const cropRules = {
   Rice: { moisture: 50, ph: [5.5, 7.5], temp: [20, 35] },
   Corn: { moisture: 40, ph: [5.8, 7], temp: [18, 32] },
@@ -194,9 +162,6 @@ const cropRules = {
   Grams: { moisture: 25, ph: [6, 7.5], temp: [18, 30] }
 };
 
-/*******************************
- * RENDER UI
- *******************************/
 function renderDynamicContent() {
   if (!latestData || !latestData.moisture) return;
 
@@ -251,9 +216,6 @@ function renderDynamicContent() {
   `;
 }
 
-/*******************************
- * LANGUAGE TOGGLE
- *******************************/
 languageToggle.addEventListener('change', () => {
   currentLanguage = languageToggle.value;
   renderDynamicContent();

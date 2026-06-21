@@ -30,7 +30,7 @@ parser.on('data', async (line) => {
 
     sensorData.moisture = sensorData.moisture ?? Math.floor(Math.random() * 101);
     sensorData.ph = sensorData.ph ?? Math.floor(Math.random()*10+2);
-    sensorData.ir = sensorData.ir ?? Math.floor((Math.random()*2)+1);
+    sensorData.ir = sensorData.ir ?? Math.floor((Math.random()*2));
     sensorData.season = sensorData.season ?? 'wet';
     sensorData.Light = sensorData.Light ?? 'light';
 

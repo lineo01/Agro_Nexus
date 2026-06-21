@@ -1,13 +1,9 @@
-// server.js
 import express from 'express';
 import cors from 'cors';
 import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-// --------------------------------------------------------
-// LOAD LOCAL AI DATASET
-// --------------------------------------------------------
 const datasetPath = path.join('.', 'AIRefining.jsonl');
 const aiDataset = fs.readFileSync(datasetPath, 'utf-8')
   .split('\n')
@@ -20,9 +16,7 @@ const PORT = 3000;
 app.use(express.json());
 app.use(cors({ origin: '*', methods: ['GET', 'POST'] }));
 
-// --------------------------------------------------------
-// SENSOR STATE
-// --------------------------------------------------------
+//Provides demo data for showcase
 let latestSensorData = {
   temperature: 0,
   humidity: 0,
@@ -96,9 +90,7 @@ function generateRealisticDemoData() {
   };
 }
 
-// --------------------------------------------------------
-// SANITIZE PAYLOADS
-// --------------------------------------------------------
+
 function sanitizeSensorPayload(payload) {
   const { temperature, humidity, moisture, ph, season, ir } = payload || {};
   return {
@@ -111,9 +103,7 @@ function sanitizeSensorPayload(payload) {
   };
 }
 
-// --------------------------------------------------------
-// SSE STREAMING
-// --------------------------------------------------------
+
 const sseClients = new Set();
 
 function broadcastSensorUpdate(data) {
@@ -121,9 +111,6 @@ function broadcastSensorUpdate(data) {
   for (const res of sseClients) res.write(msg);
 }
 
-// --------------------------------------------------------
-// ROUTE: POST SENSOR DATA
-// --------------------------------------------------------
 app.post('/sensors', (req, res) => {
   const sanitized = sanitizeSensorPayload(req.body);
 
@@ -136,9 +123,6 @@ app.post('/sensors', (req, res) => {
   res.json({ status: 'ok', data: latestSensorData });
 });
 
-// --------------------------------------------------------
-// ROUTE: GET LATEST
-// --------------------------------------------------------
 app.get('/sensors/latest', (req, res) => {
   if (latestSensorData.temperature === 0) {
     latestSensorData = generateRealisticDemoData();
@@ -146,9 +130,7 @@ app.get('/sensors/latest', (req, res) => {
   res.json(latestSensorData);
 });
 
-// --------------------------------------------------------
-// ROUTE: STREAM (SSE)
-// --------------------------------------------------------
+
 app.get('/sensors/stream', (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
@@ -170,9 +152,44 @@ app.get('/sensors/stream', (req, res) => {
   });
 });
 
-// --------------------------------------------------------
-// AI CHAT (Ollama)
-// --------------------------------------------------------
+const SYSTEM_PROMPT = `
+You are Krishi Chakra, an expert farming AI for Nepal.
+
+You always:
+- respond in Nepali when lang = np
+- respond in English when lang = en
+- use simple, farmer-friendly language
+- use real agricultural knowledge only
+- never mix languages unless technical term (pH, temperature, etc.)
+`;
+
+const LANGUAGE_RULE = (lang) => {
+  if (lang === 'np') {
+    return `
+Respond ONLY in Nepali (Nepal standard).
+Do not use Hindi.
+Keep sentences simple and natural.
+`;
+  }
+
+  return `
+Respond ONLY in English.
+Keep sentences simple and clear.
+`;
+};
+
+
+const buildContext = (data) => `
+Farm Data:
+Temperature: ${data.temperature}°C
+Humidity: ${data.humidity}%
+Moisture: ${data.moisture}%
+pH: ${data.ph}
+Season: ${data.season}
+`;
+
+
+
 app.post('/ai/chat', async (req, res) => {
   const { prompt, lang } = req.body;
   if (!prompt) return res.status(400).json({ error: 'Prompt required' });
@@ -200,28 +217,30 @@ app.post('/ai/chat', async (req, res) => {
     }
   }
 
-  // Build the prompt for Ollama
-  const contextPrompt = `
-You are Krishi Chakra, an organic farm advisor.
-No chemicals. Use traditional, local methods only which help the environment and promote sustainable farming.
+const contextPrompt = `
+[SYSTEM]
+${SYSTEM_PROMPT}
 
-${lengthInstruction}
+[LANGUAGE RULE]
+${LANGUAGE_RULE(lang)}
 
-Farm Data:
-Temp: ${data.temperature}°C
-Humidity: ${data.humidity}%
-Moisture: ${data.moisture}%
-pH: ${data.ph}
-Season: ${data.season}
+[OUTPUT MODE]
+${isDetailed ? "DETAILED ANSWER" : "SHORT ANSWER (2-4 lines max)"}
 
-Reference Advice:
-${matchedAdvice}
+[FARM DATA]
+${buildContext(data)}
 
-Question:
+[LOCAL KNOWLEDGE BASE]
+${matchedAdvice || "No relevant local advice found."}
+
+[USER QUESTION]
 ${prompt}
 
-
-Do not truncate sentences.
+[STRICT OUTPUT RULE]
+- Follow language rule exactly
+- Do not mix languages
+- Use simple farmer-friendly explanation
+- Never ignore farm data
 `;
 
   try {
