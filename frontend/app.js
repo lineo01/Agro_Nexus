@@ -220,3 +220,77 @@ languageToggle.addEventListener('change', () => {
   currentLanguage = languageToggle.value;
   renderDynamicContent();
 });
+/*******************************
+ * PLANT AI MODAL SAFE HANDLER
+ *******************************/
+
+
+
+// OPEN MODAL
+const plantBtn = document.getElementById("plantAiBtn");
+const plantModal = document.getElementById("plantAiModal");
+
+if (plantBtn && plantModal) {
+  plantBtn.onclick = () => {
+    plantModal.classList.remove("hidden");
+  };
+
+  // CLOSE ON OUTSIDE CLICK
+  plantModal.onclick = (e) => {
+    if (e.target.id === "plantAiModal") {
+      plantModal.classList.add("hidden");
+    }
+  };
+}
+
+// IMAGE PREVIEW
+const imageInput = document.getElementById("imageInput");
+const previewImg = document.getElementById("previewImg");
+
+if (imageInput) {
+  imageInput.onchange = () => {
+    const file = imageInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      previewImg.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  };
+}
+
+// PREDICT
+const predictBtn = document.getElementById("predictBtn");
+
+if (predictBtn) {
+  predictBtn.onclick = async () => {
+    const file = imageInput?.files?.[0];
+    if (!file) return alert("Upload image first");
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("http://127.0.0.1:8000/predict", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await res.json();
+
+      document.getElementById("resultImg").src = previewImg.src;
+      document.getElementById("diseaseName").innerText = data.disease || "Unknown";
+      document.getElementById("confidenceText").innerText =
+        "Confidence: " + ((data.confidence || 0) * 100).toFixed(2) + "%";
+
+      document.getElementById("treatmentBox").innerHTML = `
+        <h4>Treatment</h4>
+        <p>${data.info || "Remove infected leaves and apply organic fungicide."}</p>
+      `;
+    } catch (err) {
+      console.error(err);
+      alert("Prediction failed. Check backend."+err);
+    }
+  };
+}

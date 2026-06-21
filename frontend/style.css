@@ -362,3 +362,79 @@ body.dark textarea {
 body.dark .ai-msg { background: #374151 !important; color: #f9fafb !important; }
 body.dark .user-msg { background: #059669 !important; color: #f9fafb !important; }
 
+
+/* Tea plant section  */
+/* ================= PLANT AI BUTTON ================= */
+.plant-ai-btn{
+  margin-left: 10px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #2ecc71;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* ================= MODAL ================= */
+.ai-modal{
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.7);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.hidden{
+  display:none;
+}
+
+.ai-modal-content{
+  width:90%;
+  height:90%;
+  background:white;
+  display:flex;
+  border-radius:15px;
+  overflow:hidden;
+}
+
+/* LEFT */
+.ai-left{
+  width:20%;
+  padding:10px;
+  border-right:1px solid #ddd;
+}
+.ai-left img{
+  width:200px;
+  height: 200px;
+  margin:5px 0;
+  border-radius:8px;
+}
+
+/* CENTER */
+.ai-center{ 
+  width:40%;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.preview-box img{
+  width:250px;
+  margin-top:10px;
+}
+
+/* RIGHT */
+.ai-right{
+  width:40%;
+  padding:20px;
+}
+.ai-right img{
+  width:200px;
+  border-radius:10px;
+}

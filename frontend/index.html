@@ -9,6 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 </head>
+
 <body>
 <header>
   <div class="logo-container">
@@ -18,7 +19,10 @@
       <p>Your AI Farm Advisor</p>
     </div>
   </div>
-  <div class="toggles">
+  <div  class="toggles">
+      <button id="plantAiBtn" class="plant-ai-btn">
+  🌿 Plant AI
+</button>
     <!-- Dark Mode -->
     <div class="switch-container">
       <span>🌞</span>
@@ -29,13 +33,13 @@
       <span>🌙</span>
     </div>
 
-
     <div class="lang-container">
       <select id="languageToggle">
         <option value="en">English</option>
         <option value="np">नेपाली</option>
       </select>
     </div>
+  
   </div>
 </header>
 <div class="main-container">
@@ -146,6 +150,56 @@
 </div>
 
 
+
+
+
+<!-- ================= PLANT AI MODAL ================= -->
+<div id="plantAiModal" class="ai-modal hidden">
+
+  <div class="ai-modal-content">
+
+    <!-- LEFT SIDE: sample diseases -->
+    <div class="ai-left" >
+      <h3>Sample Diseases</h3>
+      <img src="pictures/anthracnose.jpg" > 
+      <p>anthracnose</p>
+      <img src="pictures/bird_eye_spot.jpg">
+      <p>bird_eye_spot</p>
+      <img src="pictures/brown_blight.jpg">
+      <p>brown_blight</p>
+    </div>
+
+    <!-- CENTER: upload -->
+    <div class="ai-center">
+      <h2>Upload Tea Leaf Image</h2>
+
+      <input type="file" id="imageInput" accept="image/*">
+
+      <div class="preview-box">
+        <img id="previewImg" />
+      </div>
+
+      <button id="predictBtn">Predict Disease</button>
+    </div>
+
+    <!-- RIGHT SIDE: result -->
+    <div class="ai-right">
+      <h3>AI Result</h3>
+
+      <img id="resultImg" />
+
+      <h2 id="diseaseName">---</h2>
+
+      <p id="confidenceText"></p>
+
+      <div id="treatmentBox">
+        <h4>Treatment</h4>
+        <p>Upload image to get recommendation</p>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 
 <script src="chartConfig.js"></script>
